@@ -9,7 +9,10 @@ services:
     volumes:
       - ./nextcloud-data:/var/www/html
     networks:
-      - ecosystem
+      ecosystem:
+        ipv4_address: 172.xx.xx.xx  # 指定したIPアドレスを追加
     environment:
       - NEXTCLOUD_ADMIN_USER=nextadmin
       - NEXTCLOUD_ADMIN_PASSWORD=nextadmin
+      # proxyコンテナのIPアドレス
+      - TRUSTED_PROXIES=182.20.11.21
