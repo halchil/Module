@@ -2,6 +2,7 @@ services:
   nextcloud:
     image: nextcloud
     container_name: nextcloud
+    hostname: nextcloud
     restart: always
     ports:
       - "8080:80"
