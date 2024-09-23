@@ -335,9 +335,67 @@ location = /50x.html {
 **root /usr/share/nginx/html;について**
 エラーページのファイル 50x.html が /usr/share/nginx/html ディレクトリに存在することを指定します。
 
+## Nextcloud用のlocation.conf
+
+```
+location /nextcloud {
+```
+location /nextcloud: /nextcloud というパスに対するリクエストを処理するためのブロックを定義している。
+このパスにアクセスがあると、以下の設定が適用される。
+
+```
+proxy_pass http://nextcloud:80;  # Nextcloudサービスにリクエストを転送
+```
+proxy_passは、Nginxはリクエストを http://nextcloud:80 に転送する。
+nextcloud はDocker内のNextcloudサービスの名前で、80ポートでリッスンしている。
+
+```
+proxy_set_header Host $host;  # リクエストヘッダーを設定
+```
+proxy_set_header Hostは、オリジナルのリクエストのホスト名を保持する。
+これにより、Nextcloudが正しいホスト名で応答できるようになる。
+
+```
+proxy_set_header X-Real-IP $remote_addr;  # クライアントのIPを保持
+```
+
+
+proxy_set_header X-Real-IPは、リクエストを行ったクライアントのIPアドレスを保持し、NextcloudがそのIPを取得できるようにする。
+
+```
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+```
+
+proxy_set_header X-Forwarded-Forは、プロキシチェーンを通じてクライアントのIPアドレスを追加する。
+これにより、Nextcloudは元のクライアントの情報を追跡できる。
+
+```
+proxy_set_header X-Forwarded-Proto $scheme;
+```
+
+proxy_set_header X-Forwarded-Protoは、リクエストがHTTPかHTTPSかを示すヘッダーを設定する。
+これにより、Nextcloudは適切なプロトコルを認識できる。
+
+この設定を使用することで、NginxはNextcloudへのリクエストを適切にルーティングし、クライアントの情報をNextcloudに渡すことができる。
+
+
+### 変数のインプットもとについて
+$host や $remote_addr の値のインプット元は以下の通りである。
+
+$host
+この変数は、リクエストのホストヘッダーから取得される。
+つまり、ユーザーがブラウザで入力したURLのドメイン部分（例: example.com）がこの値になる。
+
+$remote_addr
+この変数は、リクエストを送信してきたクライアントのIPアドレスを示す。
+クライアントが直接Nginxに接続している場合、そのIPアドレスが取得される。
+
+これらはログファイルから確認することができる。
 
 
 # ケースに即した確認テスト
+
+
 
 ## Nginx実行ユーザの指定方法と確認方法
 どういうシチュエーションで必要になるだろうか。
