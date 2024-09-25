@@ -287,7 +287,10 @@ server {
 **server_name localhost;について**
 サーバーの名前を localhost に設定する。
 これにより、localhost というホスト名でアクセスされたリクエストをこのサーバーブロックが処理します。
-→ここは仮想マシンのIPに変更しないといけないかも
+
+→ここは仮想マシンのIPに変更しないといけない。
+
+例えば、windowsのブラウザからこのサーバに`https://test-ecosystem.com`というドメインでアクセスしたい場合、このserver_nameの部分を`test-ecosystem.com`としておく。
 
 ## ロケーションブロックの設定
 
