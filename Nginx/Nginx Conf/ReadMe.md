@@ -318,6 +318,15 @@ index index.html;
 
 つまり、`docker-compose.yaml`で指定したvolumeとディレクトリは一致させておかなければならない。
 
+まず、hosts ファイルを開く。
+
+```
+C:\Windows\System32\drivers\etc\hosts
+```
+IPアドレスとホスト名を追加する。
+```
+19x.xxx.xxx.xxx  test-ecosystem.com
+```
 
 ## エラーページの設定
 
