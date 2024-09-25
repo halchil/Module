@@ -292,6 +292,52 @@ server {
 
 例えば、windowsのブラウザからこのサーバに`https://test-ecosystem.com`というドメインでアクセスしたい場合、このserver_nameの部分を`test-ecosystem.com`としておく。
 
+## SSL通信用のサーバブロック
+
+SSL通信を設定するためには、NginxでHTTPSをサポートする必要があります。以下に、SSL証明書を使ってNginxの設定を更新する手順を示す。
+
+まずは、SSL証明書を準備するために自己署名証明書を使うか、もしくはLet's Encryptなどの認証機関から証明書を取得します。
+
+```
+[実行コマンド]
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+```
+SSL証明書を作成するとき、特に自己署名証明書を生成する際に、opensslコマンドでいくつかの情報を入力する必要がある。
+
+
+
+```
+-----
+[結果と入力内容]
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:US
+State or Province Name (full name) [Some-State]:California
+Locality Name (eg, city) []:Los Angeles
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Test Corp
+Organizational Unit Name (eg, section) []:IT Department
+Common Name (e.g. server FQDN or YOUR name) []:val-ecosystem.com
+Email Address []:admin@val-ecosystem.com    
+```
+
+
+NginxのSSL設定を追加するために、現在のNginx設定にSSLに関する設定を追記する。
+serverブロックにSSLリスン設定、証明書のパス、暗号化設定などを含める。03-aに記載
+
+順番は
+- 証明書作成
+- docker-composeのリポジトリに鍵を配置
+- docker-composeのvolumeで鍵のリンク設定を行う
+- nginx.conf設定内容書き換え httpリダイレクトと、https受付設定
+- デプロイ httpsで通信する
+
+
+
 ## ロケーションブロックの設定
 
 ```
