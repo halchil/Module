@@ -60,3 +60,27 @@ ecosystemはネットワーク名である。
 
 `external: true` の設定は、「このネットワークは外部で既に作成されているものなので、Composeはそのネットワークを新たに作成しない」という意味である。
 つまり、docker-compose up を実行した際に、Composeは ecosystem という名前のネットワークが既に存在していると仮定してそのネットワークを使用する。
+
+# volumesについて
+
+```
+[実行コマンド]
+docker volume create nextcloud_data
+
+[結果]
+nextcloud_data
+
+[確認コマンド]
+docker volume ls
+
+[結果]
+DRIVER    VOLUME NAME
+local     5a9b800b98f488e75c8c42d95482f30c923fda64561b081d3dfd1d3305052353
+local     131749cc40a626c516702c8fb0844d209c65c71d7aba70184c16f279e63804c5
+local     elasticsearch_es_data
+local     growi_es_data
+local     growi_growi_data
+local     growi_mongo_configdb
+local     growi_mongo_db
+local     nextcloud_data
+```
